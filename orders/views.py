@@ -2,6 +2,7 @@ from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Count, F
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,6 +14,16 @@ from .tasks import send_order_status_notification
 
 
 class OrderCreateView(APIView):
+    @extend_schema(
+        request=OrderCreateSerializer,
+        responses={201: OrderDetailSerializer},
+        summary="Create an order",
+        description=(
+            "Creates an order for a store. If every requested product has enough "
+            "stock, inventory is deducted and the order is CONFIRMED. If any item "
+            "is unavailable, the order is REJECTED and no stock is deducted."
+        ),
+    )
     def post(self, request):
         serializer = OrderCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -58,6 +69,11 @@ class OrderCreateView(APIView):
 
 
 class StoreOrderListView(APIView):
+    @extend_schema(
+        responses=StoreOrderListSerializer(many=True),
+        summary="List orders for a store",
+        description="Returns store orders newest first with the number of order item rows.",
+    )
     def get(self, request, store_id):
         get_object_or_404(Store, pk=store_id)
         orders = (

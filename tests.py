@@ -67,3 +67,8 @@ class AforroApiTests(APITestCase):
         response = self.client.get("/api/search/suggest/?q=app")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["results"][0], "Apple Juice")
+
+    def test_openapi_schema_is_available(self):
+        response = self.client.get("/api/schema/")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("openapi", response.data)

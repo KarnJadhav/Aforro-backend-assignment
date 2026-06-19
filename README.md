@@ -24,6 +24,18 @@ docker compose exec api python manage.py seed_data
 
 ## API examples
 
+Swagger/OpenAPI documentation:
+
+```bash
+curl http://localhost:8000/api/schema/
+```
+
+Open the interactive Swagger UI at:
+
+```text
+http://localhost:8000/api/docs/
+```
+
 Create an order:
 
 ```bash

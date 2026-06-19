@@ -1,5 +1,6 @@
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,6 +9,14 @@ from .serializers import InventorySerializer
 
 
 class StoreInventoryView(APIView):
+    @extend_schema(
+        responses=InventorySerializer(many=True),
+        summary="List inventory for a store",
+        description=(
+            "Returns inventory rows for a store, including product title, price, "
+            "category name, and quantity. Results are cached and sorted by product title."
+        ),
+    )
     def get(self, request, store_id):
         get_object_or_404(Store, pk=store_id)
         cache_key = f"store:{store_id}:inventory"

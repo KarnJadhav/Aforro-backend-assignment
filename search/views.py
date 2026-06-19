@@ -1,5 +1,7 @@
 from django.core.cache import cache
 from django.db.models import Case, IntegerField, OuterRef, Q, Subquery, Value, When
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema, inline_serializer
+from rest_framework import serializers
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,6 +16,25 @@ def parse_bool(value):
 
 
 class ProductSearchView(APIView):
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("q", str, description="Keyword searched across title, description, and category name."),
+            OpenApiParameter("category", str, description="Category ID or exact category name."),
+            OpenApiParameter("min_price", float, description="Minimum product price."),
+            OpenApiParameter("max_price", float, description="Maximum product price."),
+            OpenApiParameter("store_id", int, description="Include inventory quantity for this store."),
+            OpenApiParameter("in_stock", bool, description="Return only products with available stock."),
+            OpenApiParameter("sort", str, enum=["price", "newest", "relevance"]),
+            OpenApiParameter("page", int, description="Page number for paginated results."),
+        ],
+        responses=ProductSerializer(many=True),
+        summary="Search products",
+        description=(
+            "Searches products with optional category, price, store, stock, sorting, "
+            "and pagination support. When store_id is provided, each product includes "
+            "that store's inventory quantity."
+        ),
+    )
     def get(self, request):
         params = request.query_params
         queryset = Product.objects.select_related("category").all()
@@ -75,6 +96,20 @@ class ProductSearchView(APIView):
 
 
 class ProductSuggestView(APIView):
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("q", str, required=True, description="At least 3 characters."),
+        ],
+        responses={
+            200: inline_serializer(
+                name="ProductSuggestResponse",
+                fields={"results": serializers.ListField(child=serializers.CharField())},
+            ),
+            400: OpenApiResponse(description="Minimum 3 characters required."),
+        },
+        summary="Autocomplete product titles",
+        description="Returns up to 10 product title suggestions with prefix matches first.",
+    )
     def get(self, request):
         query = request.query_params.get("q", "").strip()
         if len(query) < 3:

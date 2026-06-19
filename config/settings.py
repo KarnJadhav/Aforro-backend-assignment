@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "rest_framework",
     "django_filters",
+    "drf_spectacular",
     "products",
     "stores",
     "orders",
@@ -154,6 +155,17 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Aforro Backend Assignment API",
+    "DESCRIPTION": (
+        "Django REST API for products, stores, inventory, transactional order "
+        "creation, product search, autocomplete, Redis caching, and Celery tasks."
+    ),
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
