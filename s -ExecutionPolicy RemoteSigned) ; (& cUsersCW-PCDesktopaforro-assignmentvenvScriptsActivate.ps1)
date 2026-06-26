@@ -1,0 +1,30 @@
+[33mcommit 22f700b8f44b7deb728c2dfe28d1a0127c5e2778[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Karn81 <legendweb8131@gmail.com>
+Date:   Fri Jun 19 18:49:01 2026 +0530
+
+    Add Swagger OpenAPI documentation
+
+[33mcommit 8d1bf3d1a9745d91ca4895cd66d7cf818b83c7af[m
+Author: Karn81 <legendweb8131@gmail.com>
+Date:   Tue Jun 16 21:13:47 2026 +0530
+
+    Remove generated files from repository
+
+[33mcommit 64c9c5aabf55e83907c4d05b59e2a39aa8c3868f[m
+Merge: 58307c6 a5f5131
+Author: Karn81 <legendweb8131@gmail.com>
+Date:   Mon Jun 15 21:33:20 2026 +0530
+
+    merge remote repository
+
+[33mcommit a5f5131b2c501a98eda7f80bd9a30eb1197fa6de[m
+Author: Karnsinh Jadhav <180768077+KarnJadhav@users.noreply.github.com>
+Date:   Mon Jun 15 21:29:15 2026 +0530
+
+    Initial commit
+
+[33mcommit 58307c62a2a1d32888a8a9a35d81abdcafe44bf8[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Karn81 <legendweb8131@gmail.com>
+Date:   Mon Jun 15 20:47:44 2026 +0530
+
+    feat: implement Django inventory, orders, search, Redis cache, Celery and Docker setup
